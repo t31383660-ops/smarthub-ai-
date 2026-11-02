@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SmartHub AI - منصة أدوات ذكية متنوعة">
+  <title>SmartHub AI | أدواتك الذكية</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #fff;
+    }
+    header {
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      background: #121a30;
+    }
+    .logo { font-size: 25px; font-weight: bold; color: #67e8f9; }
+    button, select {
+      padding: 11px 16px;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    select { background: #26334e; color: white; }
+    .hero {
+      text-align: center;
+      padding: 65px 20px 45px;
+    }
+    .hero h1 { font-size: clamp(30px, 5vw, 48px); }
+    .hero p { color: #bdc9df; font-size: 18px; }
+    .tools {
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: #17223a;
+      border: 1px solid #2d3c5a;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    .card h2 { color: #67e8f9; font-size: 21px; }
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 9px;
+      border: 1px solid #405071;
+      background: #0c1428;
+      color: white;
+      resize: vertical;
+    }
+    .action {
+      background: #0e9fbd;
+      color: white;
+      font-weight: bold;
+    }
+    .result {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      color: #c5d5ee;
+      margin-top: 12px;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      color: #9eabc3;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">✦ SmartHub AI</div>
+  <select id="language" onchange="changeLanguage()">
+    <option value="ar">العربية</option>
+    <option value="en">English</option>
+  </select>
+</header>
+
+<section class="hero">
+  <h1 id="heading">مرحباً بك في SmartHub AI</h1>
+  <p id="intro">منصة واحدة تجمع أدواتك الذكية في مكان واحد</p>
+</section>
+
+<main class="tools" id="tools"></main>
+
+<footer>© 2026 SmartHub AI</footer>
+
+<script>
+const translations = {
+  ar: {
+    heading: "مرحباً بك في SmartHub AI",
+    intro: "منصة واحدة تجمع أدواتك الذكية في مكان واحد",
+    tools: [
+      ["📝","تلخيص النصوص","اكتب نصاً لتجربة أداة التلخيص"],
+      ["🌍","الترجمة","اكتب نصاً لتجربة أداة الترجمة"],
+      ["✍️","الكتابة الذكية","اكتب فكرة لتجربة أداة الكتابة"],
+      ["🎓","المساعد التعليمي","اكتب سؤالك التعليمي"],
+      ["💡","مولد الأفكار","اكتب موضوعاً لتوليد الأفكار"],
+      ["💬","المحادثة الذكية","اكتب رسالة للتجربة"]
+    ],
+    placeholder: "اكتب هنا...",
+    action: "تجربة الأداة",
+    notice: "هذه نسخة تجريبية. لم يتم ربط الذكاء الاصطناعي الحقيقي بعد."
+  },
+  en: {
+    heading: "Welcome to SmartHub AI",
+    intro: "Your smart tools, all in one place",
+    tools: [
+      ["📝","Text Summarizer","Try the text summarizer"],
+      ["🌍","Translator","Try the translation tool"],
+      ["✍️","Smart Writer","Try the writing assistant"],
+      ["🎓","Study Assistant","Ask a learning question"],
+      ["💡","Idea Generator","Generate creative ideas"],
+      ["💬","AI Chat","Try the chat tool"]
+    ],
+    placeholder: "Write here...",
+    action: "Try tool",
+    notice: "Demo version. Real AI is not connected yet."
+  }
+};
+
+function render(lang) {
+  const data = translations[lang];
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.getElementById("heading").textContent = data.heading;
+  document.getElementById("intro").textContent = data.intro;
+  document.getElementById("tools").innerHTML = data.tools.map((tool, i) => `
+    <section class="card">
+      <h2>${tool[0]} ${tool[1]}</h2>
+      <textarea id="input${i}" placeholder="${data.placeholder}"></textarea>
+      <button class="action" onclick="demo(${i})">${data.action}</button>
+      <p class="result" id="result${i}"></p>
+    </section>
+  `).join("");
+}
+
+function demo(i) {
+  const lang = document.getElementById("language").value;
+  const text = document.getElementById("input" + i).value.trim();
+  const result = document.getElementById("result" + i);
+  if (!text) {
+    result.textContent = lang === "ar" ? "يرجى كتابة نص أولاً." : "Please enter some text first.";
+    return;
+  }
+  result.textContent = translations[lang].notice;
+}
+
+function changeLanguage() {
+  render(document.getElementById("language").value);
+}
+
+render("ar");
+</script>
+</body>
+</html>
